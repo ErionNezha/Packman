@@ -1,5 +1,7 @@
 # 👾 Packman 🇦🇱
 
+Created by **Erion Nezha**
+
 > Lojë arcade Packman me turtle graphics në Python — ha pikat, shmangu 4 fantazmat dhe grumbullo pikë.
 
 ![Pamje nga demo](screenshot.png)
