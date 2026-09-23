@@ -1,95 +1,410 @@
 <!DOCTYPE html>
 <!-- Created by Erion Nezha — © 2026 All rights reserved -->
-<html lang="en">
+<html lang="sq">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>👾 packman &mdash; Erion Nezha</title>
-<meta name="description" content="Lojë arcade Packman me turtle graphics — ha pikat, shmangu 4 fantazmat dhe grumbullo pikë. Kërkon modulin freegames.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>👾 Packman — Erion Nezha</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--gold:#ffc857;--gold-dim:#b98a1e;--bg:#0a0a10;--card:#12121a;--line:#23232f;--txt:#e8e6df;--mut:#9a9789;--blue:#7ee0ff}
-body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;min-height:100vh}
-.hero{text-align:center;padding:72px 20px 40px;background:radial-gradient(ellipse at 50% -50%,#2a2111 0%,transparent 60%)}
-.badge{display:inline-block;border:1px solid var(--gold-dim);color:var(--gold);border-radius:999px;padding:6px 18px;font-size:12px;letter-spacing:3px;text-transform:uppercase;margin-bottom:22px}
-.hero h1{font-size:clamp(30px,5.5vw,56px);letter-spacing:2px;background:linear-gradient(180deg,#ffe9b0,var(--gold) 60%,#8a6410);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
-.hero p{color:var(--mut);max-width:660px;margin:18px auto 0;line-height:1.7;font-size:16px}
-.stack{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
-.stack span{border:1px solid var(--line);background:var(--card);color:var(--blue);border-radius:8px;padding:6px 14px;font-size:13px;font-family:Consolas,monospace}
-.stats{display:flex;gap:14px;justify-content:center;margin-top:26px;flex-wrap:wrap}
-.stat{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px 26px}
-.stat b{color:var(--gold);font-size:24px;display:block}
-.stat span{color:var(--mut);font-size:12px;letter-spacing:1px;text-transform:uppercase}
-.wrap{max-width:960px;margin:0 auto;padding:0 20px 60px}
-.codecard{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.codecard header{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--line)}
-.codecard header h3{color:var(--gold);font-size:18px}
-.codecard header h3 small{color:var(--mut);font-weight:400}
-.codebox{overflow:auto;padding:20px 22px;max-height:70vh}
-pre{font-family:'Cascadia Code',Consolas,monospace;font-size:13px;line-height:1.65;counter-reset:ln}
-pre .row{display:block;white-space:pre}
-pre .row::before{counter-increment:ln;content:counter(ln);display:inline-block;width:44px;color:#4a4a58;text-align:right;margin-right:16px;user-select:none}
-.k{color:#ff7edb}.s{color:#ffc857}.c{color:#6a6a78;font-style:italic}.n{color:#7ee0ff}
-.codecard footer{display:flex;gap:10px;padding:16px 22px;border-top:1px solid var(--line)}
-.btn{flex:1;text-align:center;border-radius:10px;padding:10px;font-size:14px;cursor:pointer;text-decoration:none;transition:.2s;border:1px solid var(--gold-dim)}
-.btn.view{background:var(--gold);color:#111;font-weight:700;border-color:var(--gold)}
-.btn.gh{background:transparent;color:var(--gold)}
-.howto{max-width:960px;margin:0 auto 50px;padding:0 20px}
-.howto .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px}
-.howto h2{color:var(--gold);margin-bottom:14px;font-size:20px}
-.howto ol{margin-left:20px;color:var(--mut);line-height:2;font-size:15px;list-style:none}
-.howto code{background:#0a0a10;border:1px solid var(--line);border-radius:6px;padding:2px 8px;color:var(--blue);font-family:Consolas,monospace;font-size:13px}
-footer.page{text-align:center;padding:34px 20px;border-top:1px solid var(--line);color:var(--mut);font-size:13px}
-footer.page a{color:var(--gold);text-decoration:none}
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    min-height: 100vh;
+    background: radial-gradient(ellipse at top, #0b1030 0%, #04040c 70%);
+    color: #e8ecff;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 18px 12px 28px;
+    user-select: none;
+  }
+  header { text-align: center; margin-bottom: 12px; }
+  header h1 {
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #ffe259, #ffa751);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    text-shadow: 0 0 30px rgba(255, 210, 63, .25);
+  }
+  header p { color: #8b93b8; font-size: .9rem; margin-top: 4px; }
+  #hud {
+    display: flex; gap: 18px; align-items: center; justify-content: center;
+    margin-bottom: 12px; flex-wrap: wrap;
+  }
+  .pill {
+    background: rgba(20, 28, 70, .7);
+    border: 1px solid rgba(90, 140, 255, .35);
+    border-radius: 999px;
+    padding: 8px 18px;
+    font-size: 1.05rem; font-weight: 600;
+    box-shadow: 0 0 18px rgba(60, 120, 255, .15);
+  }
+  .pill span { color: #ffe259; }
+  #stage { position: relative; }
+  canvas {
+    display: block;
+    width: min(92vw, 440px); height: auto;
+    border-radius: 14px;
+    border: 2px solid rgba(70, 130, 255, .55);
+    box-shadow: 0 0 28px rgba(50, 110, 255, .35), 0 0 80px rgba(50, 110, 255, .12);
+    background: #030309;
+    touch-action: none;
+  }
+  #overlay {
+    position: absolute; inset: 0;
+    display: none; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px;
+    background: rgba(3, 3, 12, .82);
+    border-radius: 14px; text-align: center; padding: 20px;
+    backdrop-filter: blur(2px);
+  }
+  #overlay.show { display: flex; }
+  #overlay h2 { font-size: 2rem; }
+  #overlay p { color: #aab3d8; }
+  button {
+    cursor: pointer;
+    background: linear-gradient(135deg, #2f6bff, #7b2fff);
+    color: #fff; border: none; border-radius: 999px;
+    padding: 12px 28px; font-size: 1rem; font-weight: 700;
+    box-shadow: 0 4px 22px rgba(80, 110, 255, .45);
+    transition: transform .12s ease, box-shadow .12s ease;
+    margin-top: 14px;
+  }
+  button:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(80, 110, 255, .6); }
+  button:active { transform: translateY(0); }
+  #overlay button { margin-top: 4px; }
+  .hint { margin-top: 12px; color: #767ea3; font-size: .85rem; text-align: center; line-height: 1.6; }
+  footer { margin-top: 22px; color: #5d6590; font-size: .85rem; }
+  footer b { color: #9fb0ff; }
 </style>
 </head>
 <body>
-<div class="hero">
-<div class="badge">Python &bull; Turtle Graphics</div>
-<h1>PACKMAN</h1>
-<p>Lojë arcade Packman me turtle graphics — ha pikat, shmangu 4 fantazmat dhe grumbullo pikë. Kërkon modulin freegames.</p>
-<div class="stack"><span>Python</span><span>turtle</span><span>freegames</span></div>
-<div class="stats"><div class="stat"><b>172</b><span>Lines of code</span></div><div class="stat"><b>4</b><span>Ghosts</span></div><div class="stat"><b>100%</b><span>Python</span></div></div>
-</div>
-<div class="wrap"><div class="codecard">
-<header><h3 id="ctitle"></h3></header>
-<div class="codebox"><pre id="ccode"></pre></div>
-<footer>
-<button class="btn view" id="copyBtn" onclick="copyCode()">📋 Copy code</button>
-<a class="btn gh" id="ghBtn" target="_blank" rel="noopener">View on GitHub ↗</a>
-</footer>
-</div></div>
-<div class="howto"><div class="box">
-<h2>▶ Si ekzekutohet / How to run</h2>
-<ol><li>Instalo: <code>pip install freegames</code></li><li>Ekzekuto: <code>python packman.py</code></li><li>Kontrolli: Shigjetat e tastierës ⬆ ⬇ ⬅ ➡</li></ol>
-</div></div>
-<footer class="page">Copyright &copy; 2026 <a href="https://github.com/ErionNezha">Erion Nezha</a>. All rights reserved.</footer>
+  <header>
+    <h1>👾 PACKMAN</h1>
+    <p>Ha të gjitha pikat — shmangu fantazmat!</p>
+  </header>
+
+  <div id="hud">
+    <div class="pill">⭐ Pikët: <span id="score">0</span></div>
+    <div class="pill">🟡 Mbetën: <span id="left">0</span></div>
+  </div>
+
+  <div id="stage">
+    <canvas id="game" width="400" height="400"></canvas>
+    <div id="overlay">
+      <h2 id="ovTitle">💀 Game Over</h2>
+      <p id="ovText"></p>
+      <button id="ovRestart">↻ Luaj përsëri</button>
+    </div>
+  </div>
+
+  <button id="restart">↻ Fillo nga e para</button>
+  <p class="hint">Shigjetat ose WASD për të lëvizur<br>Rrëshqit gishtin në celular</p>
+
+  <footer>Krijuar nga <b>Erion Nezha</b> © 2026</footer>
+
 <script>
-const P = [{"n": 1, "file": "packman.py", "title": "packman.py", "desc": "Loj\u00eb arcade Packman me turtle graphics \u2014 ha pikat, shmangu 4 fantazmat dhe grumbullo pik\u00eb. K\u00ebrkon modulin freegames.", "cat": "Source", "lines": 172, "code": "# Packman \u2014 nga Erion Nezha (c) 2026. Te gjitha te drejtat te rezervuara.\nfrom random import choice\nfrom turtle import *\n\n# install the module freegames\n# pip install freegames\nfrom freegames import floor, vector\n\nstate = {'score': 0}\npath = Turtle(visible=False)\nwriter = Turtle(visible=False)\naim = vector(5, 0)\npacman = vector(-40, -80)\nghosts = [\n    [vector(-180, 160), vector(5, 0)],\n    [vector(-180, -160), vector(0, 5)],\n    [vector(100, 160), vector(0, -5)],\n    [vector(100, -160), vector(-5, 0)],\n]\n# fmt: off\ntiles = [\n    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n    0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,\n    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,\n    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,\n    0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,\n    0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0,\n    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,\n    0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0,\n    0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,\n    0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,\n    0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,\n    0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,\n    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,\n    0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0,\n    0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0,\n    0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0,\n    0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,\n    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,\n    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n]\n# fmt: on\n\n\ndef square(x, y):\n    \"\"\"Draw square using path at (x, y).\"\"\"\n    path.up()\n    path.goto(x, y)\n    path.down()\n    path.begin_fill()\n\n    for count in range(4):\n        path.forward(20)\n        path.left(90)\n\n    path.end_fill()\n\n\ndef offset(point):\n    \"\"\"Return offset of point in tiles.\"\"\"\n    x = (floor(point.x, 20) + 200) / 20\n    y = (180 - floor(point.y, 20)) / 20\n    index = int(x + y * 20)\n    return index\n\n\ndef valid(point):\n    \"\"\"Return True if point is valid in tiles.\"\"\"\n    index = offset(point)\n\n    if tiles[index] == 0:\n        return False\n\n    index = offset(point + 19)\n\n    if tiles[index] == 0:\n        return False\n\n    return point.x % 20 == 0 or point.y % 20 == 0\n\n\ndef world():\n    \"\"\"Draw world using path.\"\"\"\n    bgcolor('black')\n    path.color('blue')\n\n    for index in range(len(tiles)):\n        tile = tiles[index]\n\n        if tile > 0:\n            x = (index % 20) * 20 - 200\n            y = 180 - (index // 20) * 20\n            square(x, y)\n\n            if tile == 1:\n                path.up()\n                path.goto(x + 10, y + 10)\n                path.dot(2, 'white')\n\n\ndef move():\n    \"\"\"Move pacman and all ghosts.\"\"\"\n    writer.undo()\n    writer.write(state['score'])\n\n    clear()\n\n    if valid(pacman + aim):\n        pacman.move(aim)\n\n    index = offset(pacman)\n\n    if tiles[index] == 1:\n        tiles[index] = 2\n        state['score'] += 1\n        x = (index % 20) * 20 - 200\n        y = 180 - (index // 20) * 20\n        square(x, y)\n\n    up()\n    goto(pacman.x + 10, pacman.y + 10)\n    dot(20, 'yellow')\n\n    for point, course in ghosts:\n        if valid(point + course):\n            point.move(course)\n        else:\n            options = [\n                vector(5, 0),\n                vector(-5, 0),\n                vector(0, 5),\n                vector(0, -5),\n            ]\n            plan = choice(options)\n            course.x = plan.x\n            course.y = plan.y\n\n        up()\n        goto(point.x + 10, point.y + 10)\n        dot(20, 'red')\n\n    update()\n\n    for point, course in ghosts:\n        if abs(pacman - point) < 20:\n            return\n\n    ontimer(move, 100)\n\n\ndef change(x, y):\n    \"\"\"Change pacman aim if valid.\"\"\"\n    if valid(pacman + vector(x, y)):\n        aim.x = x\n        aim.y = y\n\n\nsetup(420, 420, 370, 0)\nhideturtle()\ntracer(False)\nwriter.goto(160, 160)\nwriter.color('white')\nwriter.write(state['score'])\nlisten()\nonkey(lambda: change(5, 0), 'Right')\nonkey(lambda: change(-5, 0), 'Left')\nonkey(lambda: change(0, 5), 'Up')\nonkey(lambda: change(0, -5), 'Down')\nworld()\nmove()\ndone()", "blob": "https://github.com/ErionNezha/Packman/blob/main/packman.py"}];
-const p = P[0];
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function hl(code){
-  var re = new RegExp('("[^"\n]*"|\'[^\'\n]*\')|(#[^\n]*)|\\b(import|from|as|def|return|for|while|in|if|elif|else|with|class|pass|break|continue|lambda|try|except|True|False|None)\\b|\\b(\\d+\\.?\\d*)\\b', 'g');
-  return esc(code).split('\n').map(function(line){
-    var out='', last=0, m; re.lastIndex=0;
-    while((m = re.exec(line))){
-      out += line.slice(last, m.index);
-      var tok = m[0];
-      if(m[1]) out += '<span class="s">'+tok+'</span>';
-      else if(m[2]) out += '<span class="c">'+tok+'</span>';
-      else if(m[3]) out += '<span class="k">'+tok+'</span>';
-      else if(m[4]) out += '<span class="n">'+tok+'</span>';
-      last = m.index + tok.length;
-      if(tok.length === 0) re.lastIndex++;
-    }
-    out += line.slice(last);
-    return '<span class="row">'+(out||' ')+'</span>';
-  }).join('');
+'use strict';
+/* ============================================================
+   Packman — port Canvas i packman.py (freegames/turtle)
+   E njëjta hartë 20x20, e njëjta logjikë lëvizjeje.
+   Created by Erion Nezha — © 2026 All rights reserved
+   ============================================================ */
+
+// Harta origjinale 20x20 nga packman.py (0=mur, 1=pikë)
+const TILES0 = [
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0,
+    0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+];
+
+const TS = 20;          // madhësia e tile-it (px), si origjinali
+const STEP = 5;         // hapi i lëvizjes, si origjinali
+const TICK_MS = 100;    // si ontimer(move, 100) i origjinalit
+
+let tiles, pacman, aim, pending, ghosts, score, totalPellets;
+let running, over, won, tick;
+
+const GHOST_COLORS = ['#ff2b2b', '#ffb3ff', '#00e5ff', '#ffb347']; // kuqe, rozë, cyan, portokalli
+
+// floor() i freegames: dysheme në shumëfish të 20
+function tfloor(v) { return Math.floor(v / TS) * TS; }
+
+// offset(point) i origjinalit → index në tiles
+function tileIndex(wx, wy) {
+  const x = (tfloor(wx) + 200) / TS;
+  const y = (180 - tfloor(wy)) / TS;
+  return Math.round(x + y * 20);
 }
-document.getElementById('ctitle').innerHTML = esc(p.title)+' <small>'+esc(p.file)+' · '+p.lines+' lines</small>';
-document.getElementById('ccode').innerHTML = hl(p.code);
-document.getElementById('ghBtn').href = p.blob;
-function copyCode(){navigator.clipboard.writeText(p.code).then(function(){var b=document.getElementById('copyBtn');b.textContent='✅ Copied!';setTimeout(function(){b.textContent='📋 Copy code';},1500);});}
+
+// valid(point) i origjinalit
+function valid(wx, wy) {
+  if (tiles[tileIndex(wx, wy)] === 0) return false;
+  if (tiles[tileIndex(wx + 19, wy + 19)] === 0) return false;
+  return wx % TS === 0 || wy % TS === 0;
+}
+
+function resetGame() {
+  tiles = TILES0.slice();
+  pacman = { x: -40, y: -80 };       // si origjinali
+  aim = { x: STEP, y: 0 };
+  pending = null;
+  ghosts = [
+    { p: { x: -180, y: 160 },  c: { x: STEP, y: 0 },  color: GHOST_COLORS[0] },
+    { p: { x: -180, y: -160 }, c: { x: 0, y: STEP },  color: GHOST_COLORS[1] },
+    { p: { x: 100, y: 160 },   c: { x: 0, y: -STEP }, color: GHOST_COLORS[2] },
+    { p: { x: 100, y: -160 },  c: { x: -STEP, y: 0 }, color: GHOST_COLORS[3] },
+  ];
+  score = 0;
+  totalPellets = tiles.filter(t => t === 1).length;
+  running = true; over = false; won = false; tick = 0;
+}
+
+// change(x, y) i origjinalit — me buffer që drejtimi të kapet në kthesë
+function setDir(dx, dy) {
+  if (!running || over || won) return;
+  pending = { x: dx, y: dy };
+  if (valid(pacman.x + dx, pacman.y + dy)) aim = { x: dx, y: dy };
+}
+
+// move() i origjinalit — një tick
+function step() {
+  if (!running || over || won) return;
+  tick++;
+
+  if (pending && valid(pacman.x + pending.x, pacman.y + pending.y)) {
+    aim = { x: pending.x, y: pending.y };
+    pending = null;
+  }
+  if (valid(pacman.x + aim.x, pacman.y + aim.y)) {
+    pacman.x += aim.x;
+    pacman.y += aim.y;
+  }
+
+  const idx = tileIndex(pacman.x, pacman.y);
+  if (tiles[idx] === 1) {
+    tiles[idx] = 2;
+    score++;
+    if (score >= totalPellets) { won = true; running = false; return; }
+  }
+
+  // fantazmat — AI si origjinali: drejtim random kur rruga bllokohet
+  for (const g of ghosts) {
+    if (valid(g.p.x + g.c.x, g.p.y + g.c.y)) {
+      g.p.x += g.c.x;
+      g.p.y += g.c.y;
+    } else {
+      const opts = [[STEP, 0], [-STEP, 0], [0, STEP], [0, -STEP]];
+      const o = opts[Math.floor(Math.random() * 4)];
+      g.c = { x: o[0], y: o[1] };
+    }
+  }
+
+  // përplasja — si origjinali: abs(pacman - point) < 20
+  for (const g of ghosts) {
+    const dx = pacman.x - g.p.x, dy = pacman.y - g.p.y;
+    if (Math.hypot(dx, dy) < 20) { over = true; running = false; break; }
+  }
+}
+
+/* ---------------- rendering (vetëm browser) ---------------- */
+let canvas, ctx, mazeCanvas;
+
+function w2cx(wx) { return wx + 200; }       // world x → canvas x
+function w2cy(wy) { return 200 - wy; }       // world y → canvas y (turtle Y lart)
+
+function buildMaze() {
+  mazeCanvas = document.createElement('canvas');
+  mazeCanvas.width = 400; mazeCanvas.height = 400;
+  const m = mazeCanvas.getContext('2d');
+  m.fillStyle = '#030309';
+  m.fillRect(0, 0, 400, 400);
+
+  // tile-e e shtegut: blu shumë e errët (si katrorët blu të origjinalit, por premium)
+  for (let i = 0; i < 400; i++) {
+    if (TILES0[i] > 0) {
+      const c = i % 20, r = Math.floor(i / 20);
+      m.fillStyle = '#0a1030';
+      m.fillRect(c * TS, r * TS, TS, TS);
+    }
+  }
+
+  // muret: vija neoni blu përgjatë çdo kufiri mur/shteg
+  m.strokeStyle = '#3b82f6';
+  m.lineWidth = 2.5;
+  m.shadowColor = '#3b82f6';
+  m.shadowBlur = 10;
+  m.beginPath();
+  for (let i = 0; i < 400; i++) {
+    if (TILES0[i] !== 0) continue;
+    const c = i % 20, r = Math.floor(i / 20);
+    const x = c * TS, y = r * TS;
+    const path = (cc, rr) => cc >= 0 && cc < 20 && rr >= 0 && rr < 20 && TILES0[rr * 20 + cc] > 0;
+    if (path(c, r - 1)) { m.moveTo(x, y); m.lineTo(x + TS, y); }         // sipër
+    if (path(c, r + 1)) { m.moveTo(x, y + TS); m.lineTo(x + TS, y + TS); } // poshtë
+    if (path(c - 1, r)) { m.moveTo(x, y); m.lineTo(x, y + TS); }         // majtas
+    if (path(c + 1, r)) { m.moveTo(x + TS, y); m.lineTo(x + TS, y + TS); } // djathtas
+  }
+  m.stroke();
+  m.shadowBlur = 0;
+}
+
+function drawPellet(x, y) {
+  ctx.fillStyle = '#ffe9f2';
+  ctx.shadowColor = '#ffb3d1';
+  ctx.shadowBlur = 6;
+  ctx.beginPath();
+  ctx.arc(x, y, 2.6, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+}
+
+function drawPacman() {
+  const cx = w2cx(pacman.x) + 10, cy = w2cy(pacman.y) - 10;
+  const ang = aim.x === STEP ? 0 : aim.x === -STEP ? Math.PI : aim.y === STEP ? -Math.PI / 2 : Math.PI / 2;
+  const mouth = (tick % 4 < 2) ? 0.32 : 0.08; // goja hapet/mbyllet
+  ctx.fillStyle = '#ffe259';
+  ctx.shadowColor = '#ffe259';
+  ctx.shadowBlur = 14;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.arc(cx, cy, 9, ang + mouth, ang + Math.PI * 2 - mouth);
+  ctx.closePath();
+  ctx.fill();
+  ctx.shadowBlur = 0;
+}
+
+function drawGhost(g) {
+  const cx = w2cx(g.p.x) + 10, cy = w2cy(g.p.y) - 10;
+  const r = 9;
+  ctx.fillStyle = g.color;
+  ctx.shadowColor = g.color;
+  ctx.shadowBlur = 12;
+  ctx.beginPath();
+  ctx.arc(cx, cy - 1, r, Math.PI, 0);           // koka
+  ctx.lineTo(cx + r, cy + r - 1);
+  // fundi me zigzag
+  const waves = 3, wstep = (2 * r) / waves;
+  for (let i = 0; i < waves; i++) {
+    const x1 = cx + r - i * wstep;
+    ctx.lineTo(x1 - wstep / 2, cy + r - 4);
+    ctx.lineTo(x1 - wstep, cy + r - 1);
+  }
+  ctx.lineTo(cx - r, cy - 1);
+  ctx.closePath();
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  // sytë — shikojnë nga drejtimi i lëvizjes
+  const ex = Math.sign(g.c.x) * 1.4, ey = -Math.sign(g.c.y) * 1.4;
+  for (const s of [-1, 1]) {
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(cx + s * 3.6 + ex, cy - 3 + ey, 2.7, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#2430ff';
+    ctx.beginPath();
+    ctx.arc(cx + s * 3.6 + ex * 1.8, cy - 3 + ey * 1.8, 1.4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function render() {
+  ctx.clearRect(0, 0, 400, 400);
+  ctx.drawImage(mazeCanvas, 0, 0);
+  for (let i = 0; i < 400; i++) {
+    if (tiles[i] === 1) {
+      drawPellet((i % 20) * TS + 10, Math.floor(i / 20) * TS + 10);
+    }
+  }
+  for (const g of ghosts) drawGhost(g);
+  if (!over) drawPacman();
+  else {
+    // pacman "vdes" — vizatohet i zbehur
+    ctx.globalAlpha = 0.35;
+    drawPacman();
+    ctx.globalAlpha = 1;
+  }
+}
+
+function updateHUD() {
+  document.getElementById('score').textContent = score;
+  document.getElementById('left').textContent = totalPellets - score;
+  const ov = document.getElementById('overlay');
+  if (over) {
+    document.getElementById('ovTitle').textContent = '💀 Game Over';
+    document.getElementById('ovText').textContent = 'Të kapi fantazma! Pikët: ' + score;
+    ov.classList.add('show');
+  } else if (won) {
+    document.getElementById('ovTitle').textContent = '🎉 Fitove!';
+    document.getElementById('ovText').textContent = 'I hape të gjitha pikat! Pikët: ' + score;
+    ov.classList.add('show');
+  } else {
+    ov.classList.remove('show');
+  }
+}
+
+function gameLoop() {
+  step();
+  render();
+  updateHUD();
+}
+
+function initGame() {
+  canvas = document.getElementById('game');
+  ctx = canvas.getContext('2d');
+  resetGame();
+  buildMaze();
+  render();
+  updateHUD();
+  setInterval(gameLoop, TICK_MS);
+
+  const doRestart = () => { resetGame(); buildMaze(); render(); updateHUD(); };
+  document.getElementById('restart').addEventListener('click', doRestart);
+  document.getElementById('ovRestart').addEventListener('click', doRestart);
+
+  const keymap = {
+    ArrowRight: [STEP, 0], ArrowLeft: [-STEP, 0], ArrowUp: [0, STEP], ArrowDown: [0, -STEP],
+    d: [STEP, 0], a: [-STEP, 0], w: [0, STEP], s: [0, -STEP],
+    D: [STEP, 0], A: [-STEP, 0], W: [0, STEP], S: [0, -STEP],
+  };
+  document.addEventListener('keydown', (e) => {
+    const d = keymap[e.key];
+    if (d) { e.preventDefault(); setDir(d[0], d[1]); }
+  });
+
+  // swipe për celular
+  let tx = 0, ty = 0;
+  canvas.addEventListener('touchstart', (e) => {
+    const t = e.changedTouches[0];
+    tx = t.clientX; ty = t.clientY;
+  }, { passive: true });
+  canvas.addEventListener('touchend', (e) => {
+    const t = e.changedTouches[0];
+    const dx = t.clientX - tx, dy = t.clientY - ty;
+    if (Math.abs(dx) < 12 && Math.abs(dy) < 12) return;
+    if (Math.abs(dx) > Math.abs(dy)) setDir(dx > 0 ? STEP : -STEP, 0);
+    else setDir(0, dy > 0 ? -STEP : STEP); // swipe lart = lart (canvas Y poshtë)
+  }, { passive: true });
+}
+
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+  window.addEventListener('DOMContentLoaded', initGame);
+}
 </script>
 </body>
 </html>
